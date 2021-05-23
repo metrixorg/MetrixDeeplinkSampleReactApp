@@ -1,0 +1,5 @@
+rootProject.name = 'metrixDeeplinkSampleReact'
+include ':@metrixorg_react-native-plugin'
+project(':@metrixorg_react-native-plugin').projectDir = new File(rootProject.projectDir, '../node_modules/@metrixorg/react-native-plugin/android')
+
+include ':app'
