@@ -73,7 +73,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js"
+    entryFile: "index.js",
+    enableHermes: false
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -109,6 +110,8 @@ android {
         versionName "1.0"
 
         multiDexEnabled true
+
+        manifestPlaceholders = [metrixAppLinkingId: "csjlmyktawaeqxv"]
     }
     splits {
         abi {
@@ -123,6 +126,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
+    }
+
+    packagingOptions {
+        pickFirst '**/libjsc.so'
+        pickFirst '**/libc++_shared.so'
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -140,10 +148,25 @@ android {
 }
 
 dependencies {
-    implementation project(':@metrixorg_react-native-plugin')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-screens')
+    implementation project(':react-native-reanimated')
+    implementation project(':react-native-safe-area-context')
+    implementation project(':@metrixorg_react-native-plugin')
+
+    implementation'com.facebook.soloader:soloader:0.9.0+'
+    implementation "org.webkit:android-jsc:+"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    implementation "ir.metrix:reactnative:1.1.7"
+    implementation "ir.metrix.deeplink:reactnative:1.1.7"
+
+
 }
 
 // Run this once to be able to run the application with BUCK
